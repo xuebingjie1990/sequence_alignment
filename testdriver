@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import unittest
+from align_sequences import smith_waterman
+
+class TestAlignmentMethods(unittest.TestCase):
+
+    # A string aligned to itself should only have matches
+    def test_smith_waterman_self(self):
+        seq1 = "ACGTTA"
+        seq2 = "ACGTTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0),(6, 'ACGTTA','ACGTTA'))
+
+    # A test case with just one mismatch
+    def test_smith_waterman_mismatch(self):
+        seq1 = "ACGTTA"
+        seq2 = "ACCTTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0),(4, 'ACGTTA','ACCTTA'))
+
+    # A test case with one gap in seq2 using a linear gap penalty
+    def test_smith_waterman_gap1(self):
+        seq1 = "ACGTTA"
+        seq2 = "ACTTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0),(4, 'ACGTTA','AC-TTA'))
+
+    # A test case with one gap in seq1 using a linear penalty
+    def test_smith_waterman_gap2(self):
+        seq1 = "ACTTA"
+        seq2 = "ACGTTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0),(4, 'AC-TTA','ACGTTA'))
+
+    # A test case with one gap in seq2 using a affine gap penalty
+    def test_smith_waterman_gap1_affine(self):
+        seq1 = "ACGTTA"
+        seq2 = "ACTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0.5),(2.0, 'ACGTTA','AC--TA'))
+
+    # A test case with one gap in seq1 using a affine gap penalty
+    def test_smith_waterman_gap2_affine(self):
+        seq1 = "ACTA"
+        seq2 = "ACGTTA"
+        self.assertEqual(smith_waterman(seq1, seq2, 1, 1, 1, 0.5),(2.0, 'AC--TA','ACGTTA'))
+
+    # A test case with local alignment (alignment does not extend all the way)
+    def test_smith_waterman_local(self):
+        seq1 = "ACTCGCAATATGCTAGGCCAGC"
+        seq2 = "GGTTATGCTATGCGG"
+        self.assertEqual(smith_waterman(seq1, seq2, 2, 1, 4, 1),(17, 'TATGCTAGGC','TATGCTATGC'))
+
+
+if __name__ == '__main__':
+    unittest.main()
+
