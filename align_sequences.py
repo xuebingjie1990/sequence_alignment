@@ -14,6 +14,9 @@
 from sys import argv, stderr
 from getopt import getopt, GetoptError
 
+# a simple function to read the name and sequence from a file
+# The file is expected to have just one contig/sequence. This function
+# checks the assumption and complains if it is not the case.
 def read_single_contig_fasta(filename):
     names = []
     sequences = []
@@ -49,9 +52,14 @@ def smith_waterman(seq1, seq2, match, mismatch, gapopen, gapextend):
     
 
 def main(filename1, filename2, match, mismatch, gapopen, gapextend):
+    # read the name and sequence from the file
     name1, seq1 = read_single_contig_fasta(filename1)
     name2, seq2 = read_single_contig_fasta(filename2)
 
+    # this function takes as input two nucleotide sequences along with
+    # scores for an alignment match, mismatch, opening a new gap, and 
+    # extending an existing gap. This should return the maximum alignment
+    # score as well as the alignment. For examples see the testdriver script
     max_score, alnseq1, alnseq2 = smith_waterman(seq1, seq2, 
                                   match, mismatch, gapopen, gapextend)
     
