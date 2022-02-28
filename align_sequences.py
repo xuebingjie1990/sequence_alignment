@@ -75,7 +75,7 @@ def smith_waterman(seq1, seq2, match, mismatch, gapopen, gapextend):
             if tracing_matrix[i - 1, j] == up:
                 count_dups = [
                     sum(1 for _ in group)
-                    for _, group in groupby(scoring_matrix[0 : i - 1, j])
+                    for _, group in groupby(tracing_matrix[0 : i - 1, j])
                 ]
                 numgap = count_dups[-1]
                 vertical_score = (
@@ -88,7 +88,7 @@ def smith_waterman(seq1, seq2, match, mismatch, gapopen, gapextend):
             if tracing_matrix[i, j - 1] == left:
                 count_dups = [
                     sum(1 for _ in group)
-                    for _, group in groupby(scoring_matrix[i, 0 : j - 1])
+                    for _, group in groupby(tracing_matrix[i, 0 : j - 1])
                 ]
                 numgap = count_dups[-1]
                 horizontal_score = (
